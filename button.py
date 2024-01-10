@@ -1,6 +1,6 @@
 import pygame
 
-BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BRIGHT_RED = (255, 100, 100)
 
@@ -30,7 +30,7 @@ class Button:
     def create_text(self):
         """Creating text on the button"""
         font = pygame.font.Font(None, 36)
-        text_surface = font.render(self.text, True, BLACK)
+        text_surface = font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=(self.x, self.y))
         return text_surface, text_rect
 
