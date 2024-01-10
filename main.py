@@ -1,6 +1,7 @@
 import pygame
-from menu import Menu
-WIDTH, HEIGHT = 1600, 1200
+import functions
+from menu import Menu, Rules
+WIDTH, HEIGHT = 1200, 800
 
 
 class Game:
@@ -10,8 +11,18 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Monopoly Poland")
 
-        menu = Menu(self.screen)
-        menu.show()
+        main_menu = Menu(self.screen)
+        showing_menu = True
+        while showing_menu:
+            match main_menu.show():
+                case "EXIT":
+                    functions.end_game()
+                case "RULES":
+                    rules_menu = Rules(self.screen)
+                    showing_menu = rules_menu.show()
+                case "PLAY":
+                    showing_menu = False
+
 
 
 if __name__ == "__main__":
