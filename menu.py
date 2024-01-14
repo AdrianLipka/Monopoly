@@ -6,6 +6,7 @@ import functions
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+PAGES_WITH_INSTRUCTIONS = 3
 
 
 class Menu(Window):
@@ -48,21 +49,39 @@ class Rules(Window):
         self.screen = screen
 
     def show(self):
-        self.screen.fill(BLACK)
+        rule_displayed = 1
+        rules_image1 = pygame.image.load("images/rules1.jpg")
+        rules_image2 = pygame.image.load("images/rules2.jpg")
+        rules_image3 = pygame.image.load("images/rules3.jpg")
         next_button = Button(self.width * 2 / 3, self.height * 4 / 5, "NEXT!", 200, 50)
         previous_button = Button(self.width * 1 / 3, self.height * 4 / 5, "PREVIOUS!", 200, 50)
-        pygame.display.update()
+        back_button = Button(self.width * 1 / 2, self.height * 9 / 10, "BACK TO MENU!", 300, 50)
         keys = None
         while True:
+            match rule_displayed:
+                case 1:
+                    self.screen.blit(rules_image1, (0, 0))
+                case 2:
+                    self.screen.blit(rules_image2, (0, 0))
+                case 3:
+                    self.screen.blit(rules_image3, (0, 0))
             self.screen.blit(next_button.create_surf(next_button.is_hover()), next_button.hit_box)
             self.screen.blit(previous_button.create_surf(previous_button.is_hover()), previous_button.hit_box)
+            self.screen.blit(back_button.create_surf(back_button.is_hover()), back_button.hit_box)
             self.bliting_on_scren(next_button.create_text())
             self.bliting_on_scren(previous_button.create_text())
+            self.bliting_on_scren(back_button.create_text())
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     keys = pygame.key.get_pressed()
                 if event.type == pygame.QUIT:
                     functions.end_game()
+                if event.type == pygame.MOUSEBUTTONDOWN and back_button.is_hover():
+                    return True
+                if event.type == pygame.MOUSEBUTTONDOWN and next_button.is_hover() and rule_displayed < PAGES_WITH_INSTRUCTIONS:
+                    rule_displayed += 1
+                if event.type == pygame.MOUSEBUTTONDOWN and previous_button.is_hover() and rule_displayed > 1:
+                    rule_displayed -= 1
                 if keys:
                     if keys[pygame.K_ESCAPE]:
                         return True
