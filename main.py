@@ -1,6 +1,7 @@
 import pygame
 import functions
 from menu import Menu, Rules
+from board import Board
 WIDTH, HEIGHT = 1200, 800
 
 
@@ -22,7 +23,8 @@ class Game:
                     showing_menu = rules_menu.show()
                 case "PLAY":
                     showing_menu = False
-
+                    board = Board(self.screen)
+                    board.game()
 
 
 if __name__ == "__main__":
