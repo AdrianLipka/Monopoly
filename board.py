@@ -1,5 +1,9 @@
 import pygame
 from fields import City, Transport, Communication, ChanceCard, IncomeTax, CommunityChest, Corner
+from player import Player
+import functions
+from button import Button
+from window import Window
 
 BOARD = {0: "Start", 1: "Świętochłowice", 2: "Community chest", 3: "Bełchatów", 4: "Income tax", 5: "Railway station",
          6: "Warszawa", 7: "Lublin", 8: "Chance card",9: "Katowice", 10: "Jail", 11: "Toruń", 12: "Mobile network",
@@ -15,15 +19,18 @@ SPECIALPLACES = ({"Type": "Transport", "Position": (5, 15, 25, 35)},
                  {"Type": "Chance card", "Position": (8, 22, 36)},
                  {"Type": "Communication", "Position": (12, 28)})
 
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
-class Board:
+
+class Board(Window):
     def __init__(self, screen):
-        self.board = BOARD
-        self.screen = screen
+        super().__init__(screen)
         self.fields = []
+        self.turn = 2
         middle_image = pygame.transform.scale(pygame.image.load("images/board/middle.jpg"), (900, 900))
         screen.blit(middle_image, (150, 150))
-        for position in self.board:
+        for position in BOARD:
             if position in (0, 10, 20, 30):
                 self.fields.append(Corner(self.screen, position, BOARD[position]))
                 continue
@@ -45,4 +52,53 @@ class Board:
                     break
             if not special_place:
                 self.fields.append(City(self.screen, position, BOARD[position]))
+        self.player1 = Player(screen, 1)
+        self.player2 = Player(screen, 2)
 
+    def clearing_board(self):
+        for field in self.fields:
+            field.placing_on_board()
+
+    def drawing_controls_rectangle(self):
+        controls_background = pygame.Surface((400, 1200))
+        controls_background.fill(WHITE)
+        self.screen.blit(controls_background, (1200, 0))
+
+    def game(self):
+        turn1_text = functions.create_text("First player's turn", self.h2_font, BLACK, (1400, 50))
+        turn2_text = functions.create_text("Second player's turn", self.h2_font, BLACK, (1400, 50))
+        end_turn_button = Button(1400, 200, "END TURN", 200, 50)
+        roll_dice_button = Button(1400, 300, "ROLL DICE", 200, 50)
+        pygame.display.flip()
+        while True:
+            self.drawing_controls_rectangle()
+            if self.turn == 1:
+                self.bliting_on_scren(turn1_text)
+            elif self.turn == 2:
+                self.bliting_on_scren(turn2_text)
+            self.screen.blit(end_turn_button.create_surf(end_turn_button.is_hover()), end_turn_button.hit_box)
+            self.bliting_on_scren(end_turn_button.create_text())
+            self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()), roll_dice_button.hit_box)
+            self.bliting_on_scren(roll_dice_button.create_text())
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    keys = pygame.key.get_pressed()
+                if event.type == pygame.QUIT:
+                    functions.end_game()
+                if event.type == pygame.MOUSEBUTTONDOWN and end_turn_button.is_hover():
+                    if self.turn == 1:
+                        self.turn = 2
+                    else:
+                        self.turn = 1
+                if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover():
+                    if self.turn == 1:
+                        self.player1.move()
+                    else:
+                        self.player2.move()
+
+            self.clearing_board()
+            self.player1.update()
+            self.player2.update()
+
+            self.fpsClock.tick(30)
+            pygame.display.flip()

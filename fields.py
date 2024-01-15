@@ -25,14 +25,14 @@ class Field:
         self.position = position
         self.image_path = "images/board/"
         if self.position not in ROTATION_OF_IMAGE:
-            image = pygame.image.load(self.image_path + f"{self.name.replace(" ", "")}.jpg")
+            self.image = pygame.image.load(self.image_path + f"{self.name.replace(" ", "")}.jpg")
         else:
-            image = pygame.transform.rotate(pygame.image.load(self.image_path + f"{self.name.replace(" ", "")}.jpg"),
-                                            ROTATION_OF_IMAGE[self.position])
-        self.placing_on_board(image)
+            self.image = pygame.transform.rotate(pygame.image.load(self.image_path + f"{self.name.replace(" ", "")}.jpg"),
+                                                 ROTATION_OF_IMAGE[self.position])
+        self.placing_on_board()
 
-    def placing_on_board(self, image):
-        self.screen.blit(image, POSITION_ON_BOARD[self.position])
+    def placing_on_board(self):
+        self.screen.blit(self.image, POSITION_ON_BOARD[self.position])
 
     def __str__(self):
         return f"{self.name} ({self.position})"
@@ -52,7 +52,6 @@ class City(Field):
 class Transport(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
-
 
 
 class CommunityChest(Field):
