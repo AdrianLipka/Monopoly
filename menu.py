@@ -19,7 +19,7 @@ class Menu(Window):
         rules_button = Button(self.width / 2, self.height * 3 / 5, "RULES", 200, 50)
         quit_button = Button(self.width / 2, self.height * 4 / 5, "QUIT", 200, 50)
         self.screen.blit(self.menu_image, (0, 0))
-        title_text = functions.create_text("MONOPOLY POLAND", self.h1_font, WHITE,(self.width / 2, self.height * 1 / 5))[0]
+        title_text = functions.create_text("MONOPOLY POLAND", self.h1_font, WHITE,(0, 0))[0]
         text_rect = title_text.get_rect()
         background_surface = pygame.Surface((text_rect.width, text_rect.height))
         background_surface.fill(RED)
@@ -41,12 +41,12 @@ class Menu(Window):
                     return "PLAY"
 
             pygame.display.flip()
+            self.fpsClock.tick(30)
 
 
 class Rules(Window):
     def __init__(self, screen):
         super().__init__(screen)
-        self.screen = screen
 
     def show(self):
         rule_displayed = 1
@@ -87,3 +87,4 @@ class Rules(Window):
                         return True
 
             pygame.display.flip()
+            self.fpsClock.tick(30)
