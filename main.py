@@ -1,6 +1,7 @@
 import pygame
 import functions
 from menu import Menu, Rules
+from board import Board
 WIDTH, HEIGHT = 1200, 800
 
 
@@ -22,6 +23,15 @@ class Game:
                     showing_menu = rules_menu.show()
                 case "PLAY":
                     showing_menu = False
+                    self.screen.fill((255, 255, 255))
+                    rect = pygame.Rect(0,0,1200,1200)
+                    pygame.draw.rect(self.screen, (0,0,0), rect)
+                    board = Board(self.screen)
+                    while True:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                functions.end_game()
+                        pygame.display.flip()
 
 
 
