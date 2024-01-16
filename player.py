@@ -28,6 +28,7 @@ class Player:
         self.screen = screen
         self.number = number
         self.position = 0
+        self.money = 15000000
         pygame.draw.circle(self.screen, COLORS_OF_PLAYER[self.number], POSITION_PLAYER[self.number-1][self.position], CIRCLE_RADIUS)
 
     def walk_to(self, pos):
