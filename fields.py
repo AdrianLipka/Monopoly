@@ -24,6 +24,8 @@ class Field:
         self.name = name
         self.position = position
         self.image_path = "images/board/"
+        self.properties = {"Occupied": False, "To buy": False}
+        self.owner = None
         if self.position not in ROTATION_OF_IMAGE:
             self.image = pygame.image.load(self.image_path + f"{self.name.replace(" ", "")}.jpg")
         else:
@@ -33,6 +35,10 @@ class Field:
 
     def placing_on_board(self):
         self.screen.blit(self.image, POSITION_ON_BOARD[self.position])
+
+    def buying(self, player):
+        self.owner = player
+        self.properties["Occupied"] = True
 
     def __str__(self):
         return f"{self.name} ({self.position})"
@@ -44,6 +50,7 @@ class City(Field):
         for item in COLORS_OF_DISTRICTS:
             if position in item["Position"]:
                 self.color = item["Color"]
+        self.properties["To buy"] = True
 
     def __str__(self):
         return f"{self.name} ({self.position}, {self.color})"
@@ -52,6 +59,7 @@ class City(Field):
 class Transport(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
+        self.properties["To buy"] = True
 
 
 class CommunityChest(Field):
@@ -67,6 +75,7 @@ class ChanceCard(Field):
 class Communication(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
+        self.properties["To buy"] = True
 
 
 class IncomeTax(Field):

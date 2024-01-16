@@ -52,8 +52,9 @@ class Board(Window):
                     break
             if not special_place:
                 self.fields.append(City(self.screen, position, BOARD[position]))
-        self.player1 = Player(screen, 1)
-        self.player2 = Player(screen, 2)
+        player1 = Player(screen, 1)
+        player2 = Player(screen, 2)
+        self.players = [player1, player2]
         self.dice = Dice(screen)
 
     def clearing_board(self):
@@ -72,11 +73,12 @@ class Board(Window):
         roll_dice_button = Button(1400, 300, "ROLL DICE", 200, 50)
         buy_button = Button(1400, 400, "BUY FIELD", 200, 50)
         pygame.display.flip()
-        move = None
+        move_step = None
         diced = False
+        current_field = None
         while True:
             self.drawing_controls_rectangle()
-            if move:
+            if move_step:
                 self.dice.showing()
             if self.turn == 1:
                 self.bliting_on_scren(turn1_text)
@@ -84,12 +86,16 @@ class Board(Window):
                 self.bliting_on_scren(turn2_text)
             if diced:
                 self.screen.blit(roll_dice_button.create_surf(True), roll_dice_button.hit_box)
+                if not current_field.properties["Occupied"] and current_field.properties["To buy"]:
+                    self.screen.blit(buy_button.create_surf(buy_button.is_hover()), buy_button.hit_box)
+                else:
+                    self.screen.blit(buy_button.create_surf(True), buy_button.hit_box)
             else:
                 self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()), roll_dice_button.hit_box)
+                self.screen.blit(buy_button.create_surf(True), buy_button.hit_box)
             self.bliting_on_scren(roll_dice_button.create_text())
             self.screen.blit(end_turn_button.create_surf(end_turn_button.is_hover()), end_turn_button.hit_box)
             self.bliting_on_scren(end_turn_button.create_text())
-            self.screen.blit(buy_button.create_surf(buy_button.is_hover()), buy_button.hit_box)
             self.bliting_on_scren(buy_button.create_text())
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -101,20 +107,21 @@ class Board(Window):
                         self.turn = 2
                     else:
                         self.turn = 1
-                    move = None
+                    move_step = None
                     diced = False
-                if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced:
+                    current_field = None
+                if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced: # deleted for testing and multiple throws
                     diced = True
-                    move = self.dice.rolling()
+                    move_step = self.dice.rolling()
                     self.dice.showing()
-                    if self.turn == 1:
-                        self.player1.move(move)
-                    else:
-                        self.player2.move(move)
-
+                    self.players[self.turn-1].move(move_step)
+                    current_field = self.fields[self.players[self.turn-1].position]
+                if (event.type == pygame.MOUSEBUTTONDOWN and buy_button.is_hover() and diced
+                        and not current_field.properties["Occupied"] and current_field.properties["To buy"]):
+                    current_field.buying(self.players[self.turn-1])
             self.clearing_board()
-            self.player1.update()
-            self.player2.update()
+            for player in self.players:
+                player.update()
 
             self.fpsClock.tick(30)
             pygame.display.flip()

@@ -60,6 +60,9 @@ class Player:
     def update(self):
         pygame.draw.circle(self.screen, COLORS_OF_PLAYER[self.number], POSITION_PLAYER[self.number - 1][self.position], CIRCLE_RADIUS)
 
+    def __str__(self):
+        return f"{self.number}"
+
 
 class Dice:
     def __init__(self, screen):
@@ -78,6 +81,7 @@ class Dice:
     def rolling(self):
         self.move_step1 = randint(1, 6)
         self.move_step2 = randint(1, 6)
+    #   self.move_step2, self.move_step1 = 1,1      # Moving per 2 for testing
         return self.move_step1 + self.move_step2
 
     def showing(self):
