@@ -70,6 +70,7 @@ class Board(Window):
         turn2_text = functions.create_text("Second player's turn", self.h2_font, BLACK, (1400, 50))
         end_turn_button = Button(1400, 200, "END TURN", 200, 50)
         roll_dice_button = Button(1400, 300, "ROLL DICE", 200, 50)
+        buy_button = Button(1400, 400, "BUY FIELD", 200, 50)
         pygame.display.flip()
         move = None
         diced = False
@@ -88,6 +89,8 @@ class Board(Window):
             self.bliting_on_scren(roll_dice_button.create_text())
             self.screen.blit(end_turn_button.create_surf(end_turn_button.is_hover()), end_turn_button.hit_box)
             self.bliting_on_scren(end_turn_button.create_text())
+            self.screen.blit(buy_button.create_surf(buy_button.is_hover()), buy_button.hit_box)
+            self.bliting_on_scren(buy_button.create_text())
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     keys = pygame.key.get_pressed()
