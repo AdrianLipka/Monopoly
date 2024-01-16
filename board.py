@@ -1,6 +1,6 @@
 import pygame
 from fields import City, Transport, Communication, ChanceCard, IncomeTax, CommunityChest, Corner
-from player import Player
+from player import Player, Dice
 import functions
 from button import Button
 from window import Window
@@ -54,6 +54,7 @@ class Board(Window):
                 self.fields.append(City(self.screen, position, BOARD[position]))
         self.player1 = Player(screen, 1)
         self.player2 = Player(screen, 2)
+        self.dice = Dice(screen)
 
     def clearing_board(self):
         for field in self.fields:
@@ -70,16 +71,23 @@ class Board(Window):
         end_turn_button = Button(1400, 200, "END TURN", 200, 50)
         roll_dice_button = Button(1400, 300, "ROLL DICE", 200, 50)
         pygame.display.flip()
+        move = None
+        diced = False
         while True:
             self.drawing_controls_rectangle()
+            if move:
+                self.dice.showing()
             if self.turn == 1:
                 self.bliting_on_scren(turn1_text)
             elif self.turn == 2:
                 self.bliting_on_scren(turn2_text)
+            if diced:
+                self.screen.blit(roll_dice_button.create_surf(True), roll_dice_button.hit_box)
+            else:
+                self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()), roll_dice_button.hit_box)
+            self.bliting_on_scren(roll_dice_button.create_text())
             self.screen.blit(end_turn_button.create_surf(end_turn_button.is_hover()), end_turn_button.hit_box)
             self.bliting_on_scren(end_turn_button.create_text())
-            self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()), roll_dice_button.hit_box)
-            self.bliting_on_scren(roll_dice_button.create_text())
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     keys = pygame.key.get_pressed()
@@ -90,11 +98,16 @@ class Board(Window):
                         self.turn = 2
                     else:
                         self.turn = 1
-                if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover():
+                    move = None
+                    diced = False
+                if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced:
+                    diced = True
+                    move = self.dice.rolling()
+                    self.dice.showing()
                     if self.turn == 1:
-                        self.player1.move()
+                        self.player1.move(move)
                     else:
-                        self.player2.move()
+                        self.player2.move(move)
 
             self.clearing_board()
             self.player1.update()
