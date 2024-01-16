@@ -49,14 +49,36 @@ class Player:
             else:
                 self.position += 1
 
-    def move(self):
-        move_step = randint(1, 12)
+    def move(self, move_step):
         if self.position + move_step > 39:
             new_position = self.position + move_step - 40
         else:
-            new_position = self.position + move_step
-
+            new_position = self.position + move_step - 1
         self.walk_to(new_position)
 
     def update(self):
         pygame.draw.circle(self.screen, COLORS_OF_PLAYER[self.number], POSITION_PLAYER[self.number - 1][self.position], CIRCLE_RADIUS)
+
+
+class Dice:
+    def __init__(self, screen):
+        self.screen = screen
+        self.position = ((1300, 500), (1500, 500))
+        dice1 = pygame.transform.scale(pygame.image.load("images/dice/dice1.png"), (50, 50))
+        dice2 = pygame.transform.scale(pygame.image.load("images/dice/dice2.png"), (50, 50))
+        dice3 = pygame.transform.scale(pygame.image.load("images/dice/dice3.png"), (50, 50))
+        dice4 = pygame.transform.scale(pygame.image.load("images/dice/dice4.png"), (50, 50))
+        dice5 = pygame.transform.scale(pygame.image.load("images/dice/dice5.png"), (50, 50))
+        dice6 = pygame.transform.scale(pygame.image.load("images/dice/dice6.png"), (50, 50))
+        self.dice_images = [dice1, dice2, dice3, dice4, dice5, dice6]
+        self.move_step1 = None
+        self.move_step2 = None
+
+    def rolling(self):
+        self.move_step1 = randint(1, 6)
+        self.move_step2 = randint(1, 6)
+        return self.move_step1 + self.move_step2
+
+    def showing(self):
+        self.screen.blit(self.dice_images[self.move_step1 - 1], self.position[0])
+        self.screen.blit(self.dice_images[self.move_step2 - 1], self.position[1])
