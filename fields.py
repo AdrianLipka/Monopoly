@@ -40,6 +40,11 @@ class Field:
         self.owner = player
         self.properties["Occupied"] = True
 
+    def field_to_buy(self):
+        self.properties["To buy"] = True
+        title_deed_card_image = pygame.image.load(f"images/title_deed_cards/{self.name.replace(" ", "")}.png")
+        self.properties["Title deed card"] = title_deed_card_image
+
     def __str__(self):
         return f"{self.name} ({self.position})"
 
@@ -50,7 +55,7 @@ class City(Field):
         for item in COLORS_OF_DISTRICTS:
             if position in item["Position"]:
                 self.color = item["Color"]
-        self.properties["To buy"] = True
+        self.field_to_buy()
 
     def __str__(self):
         return f"{self.name} ({self.position}, {self.color})"
@@ -59,7 +64,7 @@ class City(Field):
 class Transport(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
-        self.properties["To buy"] = True
+        self.field_to_buy()
 
 
 class CommunityChest(Field):
@@ -75,7 +80,7 @@ class ChanceCard(Field):
 class Communication(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
-        self.properties["To buy"] = True
+        self.field_to_buy()
 
 
 class IncomeTax(Field):

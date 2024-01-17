@@ -21,6 +21,7 @@ SPECIALPLACES = ({"Type": "Transport", "Position": (5, 15, 25, 35)},
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+DARK_BLUE = (0, 0, 139)
 
 
 class Board(Window):
@@ -63,12 +64,12 @@ class Board(Window):
 
     def drawing_controls_rectangle(self):
         controls_background = pygame.Surface((400, 1200))
-        controls_background.fill(WHITE)
+        controls_background.fill(DARK_BLUE)
         self.screen.blit(controls_background, (1200, 0))
 
     def game(self):
-        turn1_text = functions.create_text("First player's turn", self.h2_font, BLACK, (1400, 50))
-        turn2_text = functions.create_text("Second player's turn", self.h2_font, BLACK, (1400, 50))
+        turn1_text = functions.create_text("First player's turn", self.h2_font, WHITE, (1400, 50))
+        turn2_text = functions.create_text("Second player's turn", self.h2_font, WHITE, (1400, 50))
         end_turn_button = Button(1400, 200, "END TURN", 200, 50)
         roll_dice_button = Button(1400, 300, "ROLL DICE", 200, 50)
         buy_button = Button(1400, 400, "BUY FIELD", 200, 50)
@@ -85,6 +86,8 @@ class Board(Window):
             elif self.turn == 2:
                 self.bliting_on_scren(turn2_text)
             if diced:
+                if current_field.properties["To buy"]:
+                    self.screen.blit(current_field.properties["Title deed card"], (1300, 600))
                 self.screen.blit(roll_dice_button.create_surf(True), roll_dice_button.hit_box)
                 if not current_field.properties["Occupied"] and current_field.properties["To buy"]:
                     self.screen.blit(buy_button.create_surf(buy_button.is_hover()), buy_button.hit_box)
