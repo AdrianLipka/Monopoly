@@ -88,11 +88,14 @@ class Board(Window):
             if diced:
                 if current_field.properties["To buy"]:
                     self.screen.blit(current_field.properties["Title deed card"], (1300, 600))
-                self.screen.blit(roll_dice_button.create_surf(True), roll_dice_button.hit_box)
                 if not current_field.properties["Occupied"] and current_field.properties["To buy"]:
                     self.screen.blit(buy_button.create_surf(buy_button.is_hover()), buy_button.hit_box)
                 else:
                     self.screen.blit(buy_button.create_surf(True), buy_button.hit_box)
+                if current_field.properties["Occupied"]:
+                    owner_text = functions.create_text(f"Owner: Player {current_field.owner}", self.h2_font, WHITE, (1400, 1000))
+                    self.bliting_on_scren(owner_text)
+                self.screen.blit(roll_dice_button.create_surf(True), roll_dice_button.hit_box)
             else:
                 self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()), roll_dice_button.hit_box)
                 self.screen.blit(buy_button.create_surf(True), buy_button.hit_box)
