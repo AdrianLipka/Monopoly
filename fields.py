@@ -40,6 +40,7 @@ class Field:
     def buying(self, player):
         self.owner = player
         self.properties["Occupied"] = True
+        player.money -= self.properties["Cost"]
 
     def field_to_buy(self):
         self.properties["To buy"] = True
@@ -70,6 +71,11 @@ class Transport(Field):
         self.rent = {1: 250000, 2: 500000, 3: 1000000, 4: 2000000}
         self.field_to_buy()
 
+    def buying(self, player):
+        self.owner = player
+        self.properties["Occupied"] = True
+        player.money -= self.price
+
 
 class CommunityChest(Field):
     def __init__(self, screen, position, name):
@@ -87,6 +93,11 @@ class Communication(Field):
         self.price = 750000
         self.rent = {1: 40000, 2: 100000}
         self.field_to_buy()
+
+    def buying(self, player):
+        self.owner = player
+        self.properties["Occupied"] = True
+        player.money -= self.price
 
 
 class IncomeTax(Field):
