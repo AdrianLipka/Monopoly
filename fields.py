@@ -1,4 +1,5 @@
 import pygame
+from fields_info import field_info
 
 COLORS_OF_DISTRICTS = ({"Position": (1, 3), "Color": "Brown"},
                        {"Position": (6, 7, 9), "Color": "Light blue"},
@@ -56,6 +57,7 @@ class City(Field):
             if position in item["Position"]:
                 self.color = item["Color"]
         self.field_to_buy()
+        self.properties.update(field_info(self.name))
 
     def __str__(self):
         return f"{self.name} ({self.position}, {self.color})"
@@ -64,6 +66,8 @@ class City(Field):
 class Transport(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
+        self.price = 2000000
+        self.rent = {1: 250000, 2: 500000, 3: 1000000, 4: 2000000}
         self.field_to_buy()
 
 
@@ -80,6 +84,8 @@ class ChanceCard(Field):
 class Communication(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
+        self.price = 750000
+        self.rent = {1: 40000, 2: 100000}
         self.field_to_buy()
 
 
