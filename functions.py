@@ -24,6 +24,6 @@ def same_owner(curnt_player, field_owner):
 
 def money_amount(money):
     if money > 1000000:
-        return f"${round(money/1000000,2)}M"
+        return f"${round(money/1000000, 4)}M"
     else:
-        return f"${money/1000}K"
+        return f"${money//1000}K"
