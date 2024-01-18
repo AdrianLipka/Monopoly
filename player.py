@@ -28,7 +28,7 @@ class Player:
         self.screen = screen
         self.number = number
         self.position = 0
-        self.money = 15000000
+        self.money = 40000000
         pygame.draw.circle(self.screen, COLORS_OF_PLAYER[self.number], POSITION_PLAYER[self.number-1][self.position], CIRCLE_RADIUS)
 
     def walk_to(self, pos):
@@ -67,7 +67,7 @@ class Player:
 class Dice:
     def __init__(self, screen):
         self.screen = screen
-        self.position = ((1300, 500), (1500, 500))
+        self.position = ((1300, 600), (1450, 600))
         dice1 = pygame.transform.scale(pygame.image.load("images/dice/dice1.png"), (50, 50))
         dice2 = pygame.transform.scale(pygame.image.load("images/dice/dice2.png"), (50, 50))
         dice3 = pygame.transform.scale(pygame.image.load("images/dice/dice3.png"), (50, 50))
@@ -81,7 +81,7 @@ class Dice:
     def rolling(self):
         self.move_step1 = randint(1, 6)
         self.move_step2 = randint(1, 6)
-    #   self.move_step2, self.move_step1 = 1,1      # Moving per 2 for testing
+        self.move_step2, self.move_step1 = 1,1      # Moving per 2 for testing
         return self.move_step1 + self.move_step2
 
     def showing(self):

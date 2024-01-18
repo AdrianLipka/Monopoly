@@ -18,19 +18,23 @@ POSITION_ON_BOARD = ((1050, 1050), (950, 1050), (850, 1050), (750, 1050), (650, 
 
 ROTATION_OF_IMAGE = {17: -90, 33: 90, 36: 90, 38: 90}
 
+GREEN = (0, 255, 0)
+DARK_RED = (139, 0, 0)
+
 
 class Field:
     def __init__(self, screen, position, name):
         self.screen = screen
         self.name = name
         self.position = position
-        self.image_path = "images/board/"
         self.properties = {"Occupied": False, "To buy": False}
         self.owner = None
+        self.rent = None
+        image_path = "images/board/"
         if self.position not in ROTATION_OF_IMAGE:
-            self.image = pygame.image.load(self.image_path + f"{self.name.replace(" ", "")}.jpg")
+            self.image = pygame.image.load(image_path + f"{self.name.replace(" ", "")}.jpg")
         else:
-            self.image = pygame.transform.rotate(pygame.image.load(self.image_path + f"{self.name.replace(" ", "")}.jpg"),
+            self.image = pygame.transform.rotate(pygame.image.load(image_path + f"{self.name.replace(" ", "")}.jpg"),
                                                  ROTATION_OF_IMAGE[self.position])
         self.placing_on_board()
 
@@ -40,6 +44,7 @@ class Field:
     def buying(self, player):
         self.owner = player
         self.properties["Occupied"] = True
+        self.rent = self.properties["Rent"][0]
         player.money -= self.properties["Cost"]
 
     def field_to_buy(self):
@@ -59,6 +64,51 @@ class City(Field):
                 self.color = item["Color"]
         self.field_to_buy()
         self.properties.update(field_info(self.name))
+        self.builded = 0
+
+    def building(self):
+        self.owner.money -= self.properties["Building cost"]
+        self.builded += 1
+        self.rent = self.properties["Rent"][self.builded]
+
+    def showing_buildings(self):
+        if self.builded > 0:
+            if self.position < 10:
+                rotation = 0
+            elif self.position < 20:
+                rotation = 1
+            elif self.position < 30:
+                rotation = 2
+            else:
+                rotation = 3
+            if self.builded == 5:
+                position = list(POSITION_ON_BOARD[self.position])
+                match rotation:
+                    case 0 | 2:
+                        position[0] += 50
+                        position[1] += 18
+                    case 1:
+                        position[0] += 150 - 18
+                        position[1] += 50
+                    case 3:
+                        position[0] += 18
+                        position[1] += 50
+                #position = tuple(position)
+                pygame.draw.circle(self.screen, DARK_RED, position, 10)
+            else:
+                for i in range(self.builded):
+                    position = list(POSITION_ON_BOARD[self.position])
+                    match rotation:
+                        case 0 | 2:
+                            position[0] += 18 + i * 20 + 2
+                            position[1] += 18
+                        case 1:
+                            position[0] += 150 - 18
+                            position[1] += 18 + i * 20 + 2
+                        case 3:
+                            position[0] += 18
+                            position[1] += 18 + i * 20 + 2
+                    pygame.draw.circle(self.screen, GREEN, position, 10)
 
     def __str__(self):
         return f"{self.name} ({self.position}, {self.color})"
@@ -90,7 +140,7 @@ class ChanceCard(Field):
 class Communication(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
-        self.price = 750000
+        self.price = 1500000
         self.rent = {1: 40000, 2: 100000}
         self.field_to_buy()
 

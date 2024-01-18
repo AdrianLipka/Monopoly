@@ -28,7 +28,7 @@ class Board(Window):
     def __init__(self, screen):
         super().__init__(screen)
         self.fields = []
-        self.turn = 2
+        self.turn = 1
         middle_image = pygame.transform.scale(pygame.image.load("images/board/middle.jpg"), (900, 900))
         screen.blit(middle_image, (150, 150))
         for position in BOARD:
@@ -67,42 +67,72 @@ class Board(Window):
         controls_background.fill(DARK_BLUE)
         self.screen.blit(controls_background, (1200, 0))
 
+    def category_holder(self, curnt_field, curnt_player):
+        same_owner = True
+        for field in self.fields:
+            if isinstance(curnt_field, City) and isinstance(field, City):
+                if curnt_field.color == field.color:
+                    same_owner = functions.same_owner(curnt_player, field.owner)
+                if not same_owner:
+                    return same_owner
+            elif ((isinstance(curnt_field, Transport) and isinstance(field, Transport))
+                  or (isinstance(curnt_field, Communication) and isinstance(field, Communication))):
+                same_owner = functions.same_owner(curnt_player, field.owner)
+                if not same_owner:
+                    return same_owner
+        return same_owner
+
     def game(self):
         turn1_text = functions.create_text("First player's turn", self.h2_font, WHITE, (1400, 50))
         turn2_text = functions.create_text("Second player's turn", self.h2_font, WHITE, (1400, 50))
         end_turn_button = Button(1400, 200, "END TURN", 200, 50)
         roll_dice_button = Button(1400, 300, "ROLL DICE", 200, 50)
         buy_button = Button(1400, 400, "BUY FIELD", 200, 50)
+        build_button = Button(1400, 500, "BUILD", 200, 50)
         pygame.display.flip()
         move_step = None
         diced = False
         current_field = None
+        building_ability = None
         while True:
             self.drawing_controls_rectangle()
+            budget_text = functions.create_text(f"Budget: {functions.money_amount(self.players[self.turn-1].money)}",
+                                                self.h2_font, WHITE, (1400, 100))
             if move_step:
                 self.dice.showing()
             if self.turn == 1:
                 self.bliting_on_scren(turn1_text)
             elif self.turn == 2:
                 self.bliting_on_scren(turn2_text)
+            self.bliting_on_scren(budget_text)
             if diced:
                 if current_field.properties["To buy"]:
-                    self.screen.blit(current_field.properties["Title deed card"], (1300, 600))
+                    self.screen.blit(current_field.properties["Title deed card"], (1300, 700))
                 if not current_field.properties["Occupied"] and current_field.properties["To buy"]:
                     self.screen.blit(buy_button.create_surf(buy_button.is_hover()), buy_button.hit_box)
+                    self.screen.blit(build_button.create_surf(True), build_button.hit_box)
                 else:
                     self.screen.blit(buy_button.create_surf(True), buy_button.hit_box)
+                    self.screen.blit(build_button.create_surf(True), build_button.hit_box)
                 if current_field.properties["Occupied"]:
-                    owner_text = functions.create_text(f"Owner: Player {current_field.owner}", self.h2_font, WHITE, (1400, 1000))
+                    building_ability = self.category_holder(current_field, self.players[self.turn-1])
+                    if (building_ability and isinstance(current_field, City) and current_field.builded < 5 and
+                            self.players[self.turn-1].money >= current_field.properties["Building cost"]):
+                        self.screen.blit(build_button.create_surf(build_button.is_hover()), build_button.hit_box)
+                    else:
+                        self.screen.blit(build_button.create_surf(True), build_button.hit_box)
+                    owner_text = functions.create_text(f"Owner: Player {current_field.owner}", self.h2_font, WHITE, (1400, 1050))
                     self.bliting_on_scren(owner_text)
                 self.screen.blit(roll_dice_button.create_surf(True), roll_dice_button.hit_box)
             else:
                 self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()), roll_dice_button.hit_box)
                 self.screen.blit(buy_button.create_surf(True), buy_button.hit_box)
+                self.screen.blit(build_button.create_surf(True), build_button.hit_box)
             self.bliting_on_scren(roll_dice_button.create_text())
             self.screen.blit(end_turn_button.create_surf(end_turn_button.is_hover()), end_turn_button.hit_box)
             self.bliting_on_scren(end_turn_button.create_text())
             self.bliting_on_scren(buy_button.create_text())
+            self.bliting_on_scren(build_button.create_text())
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     keys = pygame.key.get_pressed()
@@ -116,7 +146,7 @@ class Board(Window):
                     move_step = None
                     diced = False
                     current_field = None
-                if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced: # deleted for testing and multiple throws
+                if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover(): #and not diced: # deleted for testing and multiple throws
                     diced = True
                     move_step = self.dice.rolling()
                     self.dice.showing()
@@ -125,9 +155,16 @@ class Board(Window):
                 if (event.type == pygame.MOUSEBUTTONDOWN and buy_button.is_hover() and diced
                         and not current_field.properties["Occupied"] and current_field.properties["To buy"]):
                     current_field.buying(self.players[self.turn-1])
+                if (event.type == pygame.MOUSEBUTTONDOWN and build_button.is_hover() and diced and
+                        building_ability and isinstance(current_field, City) and current_field.builded < 5 and
+                        self.players[self.turn-1].money >= current_field.properties["Building cost"]):
+                    current_field.building()
             self.clearing_board()
             for player in self.players:
                 player.update()
 
+            for field in self.fields:
+                if isinstance(field, City):
+                    field.showing_buildings()
             self.fpsClock.tick(30)
             pygame.display.flip()
