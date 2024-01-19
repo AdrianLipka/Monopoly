@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module board</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>board</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/lab/sl/72/Desktop/Monopoly/board.py">/home/lab/sl/72/Desktop/Monopoly/board.py</a></font></td></tr></table>
+    <p><tt>BOARD&nbsp;MODULE</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="functions.html">functions</a><br>
+</td><td width="25%" valign=top><a href="pygame.html">pygame</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="window.html#Window">window.Window</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="board.html#Board">Board</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Board">class <strong>Board</strong></a>(<a href="window.html#Window">window.Window</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Board">Board</a>(screen)<br>
+&nbsp;<br>
+Main&nbsp;board&nbsp;window<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="board.html#Board">Board</a></dd>
+<dd><a href="window.html#Window">window.Window</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Board-__init__"><strong>__init__</strong></a>(self, screen)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Board-category_holder"><strong>category_holder</strong></a>(self, curnt_field, curnt_player)</dt><dd><tt>Checking&nbsp;if&nbsp;player&nbsp;has&nbsp;all&nbsp;fields&nbsp;in&nbsp;category</tt></dd></dl>
+
+<dl><dt><a name="Board-clearing_board"><strong>clearing_board</strong></a>(self)</dt><dd><tt>Placing&nbsp;fields&nbsp;on&nbsp;the&nbsp;board</tt></dd></dl>
+
+<dl><dt><a name="Board-drawing_controls_rectangle"><strong>drawing_controls_rectangle</strong></a>(self)</dt><dd><tt>Drawing&nbsp;controls&nbsp;rectangle&nbsp;on&nbsp;the&nbsp;screen</tt></dd></dl>
+
+<dl><dt><a name="Board-game"><strong>game</strong></a>(self)</dt><dd><tt>Main&nbsp;game&nbsp;loop</tt></dd></dl>
+
+<dl><dt><a name="Board-if_game_over"><strong>if_game_over</strong></a>(self)</dt><dd><tt>Checking&nbsp;if&nbsp;player&nbsp;run&nbsp;out&nbsp;from&nbsp;money</tt></dd></dl>
+
+<dl><dt><a name="Board-update_board"><strong>update_board</strong></a>(self)</dt><dd><tt>Update&nbsp;the&nbsp;board</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="window.html#Window">window.Window</a>:<br>
+<dl><dt><a name="Board-bliting_on_scren"><strong>bliting_on_scren</strong></a>(self, parameters)</dt><dd><tt>Showing&nbsp;object&nbsp;to&nbsp;the&nbsp;screen</tt></dd></dl>
+
+<dl><dt><a name="Board-show"><strong>show</strong></a>(self)</dt><dd><tt>Showing&nbsp;the&nbsp;window&nbsp;method</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="window.html#Window">window.Window</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>BLACK</strong> = (0, 0, 0)<br>
+<strong>BOARD</strong> = {0: 'Start', 1: 'Świętochłowice', 2: 'Community chest', 3: 'Bełchatów', 4: 'Income tax', 5: 'Railway station', 6: 'Warszawa', 7: 'Lublin', 8: 'Chance card', 9: 'Katowice', ...}<br>
+<strong>DARK_BLUE</strong> = (0, 0, 139)<br>
+<strong>SPECIALPLACES</strong> = ({'Position': (5, 15, 25, 35), 'Type': 'Transport'}, {'Position': (2, 17, 33), 'Type': 'Community chest'}, {'Position': (4, 38), 'Type': 'Income tax'}, {'Position': (8, 22, 36), 'Type': 'Chance card'}, {'Position': (12, 28), 'Type': 'Communication'})<br>
+<strong>WHITE</strong> = (255, 255, 255)</td></tr></table>
+</body></html>
