@@ -25,8 +25,6 @@ class Game:
                     showing_menu = False
                     board = Board(self.screen)
                     player_lost = board.game()
-                    del board
-                    self.screen.fill((255, 255, 255))
                     end_game = EndGame(self.screen, player_lost)
                     if end_game.show():
                         showing_menu = True
