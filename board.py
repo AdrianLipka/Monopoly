@@ -242,7 +242,7 @@ class Board(Window):
                                 self.players[self.turn - 1].walk_to((25, 1140))
                             self.update_board()
 
-                    if event.type == pygame.MOUSEBUTTONDOWN and end_turn_button.is_hover() and diced:
+                    elif event.type == pygame.MOUSEBUTTONDOWN and end_turn_button.is_hover() and diced:
                         if self.turn == 1:
                             self.turn = 2
                         elif self.turn == 2:
@@ -253,7 +253,7 @@ class Board(Window):
                         paid_rent = False
                         got_reward = False
 
-                    if (event.type == pygame.MOUSEBUTTONDOWN and buy_button.is_hover() and diced
+                    elif (event.type == pygame.MOUSEBUTTONDOWN and buy_button.is_hover() and diced
                             and not current_field.properties["Occupied"] and current_field.properties["To buy"]):
                         if isinstance(current_field, City):
                             current_field.buying(self.players[self.turn-1])
@@ -270,7 +270,7 @@ class Board(Window):
                             amount_of_category_fields = len(field_in_category_owning)
                             for field in field_in_category_owning:
                                 field.rent = field.properties["Rent"][amount_of_category_fields]
-                    if (event.type == pygame.MOUSEBUTTONDOWN and build_button.is_hover() and diced and
+                    elif (event.type == pygame.MOUSEBUTTONDOWN and build_button.is_hover() and diced and
                             building_ability and isinstance(current_field, City) and current_field.builded < 5 and
                             self.players[self.turn-1].money >= current_field.properties["Building cost"]):
                         current_field.building()
@@ -285,7 +285,7 @@ class Board(Window):
                             current_field = self.fields[self.players[self.turn - 1].position]
                         move_step = self.dice.move_step1 + self.dice.move_step2
                         self.dice.showing()
-                    if event.type == pygame.MOUSEBUTTONDOWN and end_turn_button.is_hover() and diced:
+                    elif event.type == pygame.MOUSEBUTTONDOWN and end_turn_button.is_hover() and diced:
                         if self.turn == 1:
                             self.turn = 2
                         else:
@@ -295,7 +295,7 @@ class Board(Window):
                         current_field = None
                         paid_rent = False
                         got_reward = False
-                    if event.type == pygame.MOUSEBUTTONDOWN and buy_out_button.is_hover():
+                    elif event.type == pygame.MOUSEBUTTONDOWN and buy_out_button.is_hover():
                         self.players[self.turn - 1].prison["State"] = False
                         self.players[self.turn - 1].money -= 500000
                         if self.turn == 1:
@@ -307,7 +307,7 @@ class Board(Window):
                         current_field = None
                         paid_rent = False
                         got_reward = False
-                    if event.type == pygame.MOUSEBUTTONDOWN and use_card_button.is_hover():
+                    elif event.type == pygame.MOUSEBUTTONDOWN and use_card_button.is_hover():
                         self.players[self.turn - 1].prison["State"] = False
                         self.players[self.turn - 1].prison["Card"] -= 1
                         if self.turn == 1:
