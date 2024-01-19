@@ -1,7 +1,9 @@
+"""WINDOW MODULE"""
 import pygame
 
 
 class Window:
+    """Window class"""
     def __init__(self, screen):
         self.screen = screen
         self.width = screen.get_width()
@@ -14,3 +16,6 @@ class Window:
         """Showing object to the screen"""
         obj, surface = parameters
         self.screen.blit(obj, surface)
+
+    def show(self):
+        """Showing the window method"""
