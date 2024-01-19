@@ -1,3 +1,4 @@
+"""FIELDS INFO MODULE"""
 BELCHATOW = {"Cost": 600000, "Rent": {0: 40000, 1: 200000, 2: 600000, 3: 1800000, 4: 3200000,
                                       5: 4500000}, "Building cost": 500000}
 BIALYSTOK = {"Cost": 4000000, "Rent": {0: 500000, 1: 2000000, 2: 6000000, 3: 14000000, 4: 17000000,
@@ -50,4 +51,5 @@ FIELDS_INFO = {"Bełchatów": BELCHATOW, "Białystok": BIALYSTOK, "Bydgoszcz": B
 
 
 def field_info(city):
+    """Returning info about field"""
     return FIELDS_INFO[city]

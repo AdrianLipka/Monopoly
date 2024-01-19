@@ -1,3 +1,4 @@
+"""BOARD MODULE"""
 import pygame
 from fields import City, Transport, Communication, ChanceCard, IncomeTax, CommunityChest, Corner
 from player import Player, Dice
@@ -6,7 +7,7 @@ from button import Button
 from window import Window
 
 BOARD = {0: "Start", 1: "Świętochłowice", 2: "Community chest", 3: "Bełchatów", 4: "Income tax", 5: "Railway station",
-         6: "Warszawa", 7: "Lublin", 8: "Chance card",9: "Katowice", 10: "Jail", 11: "Toruń", 12: "Mobile network",
+         6: "Warszawa", 7: "Lublin", 8: "Chance card", 9: "Katowice", 10: "Jail", 11: "Toruń", 12: "Mobile network",
          13: "Rybnik", 14: "Łódź", 15: "Airport", 16: "Chojnice", 17: "Community Chest", 18: "Elbląg", 19: "Szczecin",
          20: "Parking", 21: "Zielona góra", 22: "Chance card", 23: "Bydgoszcz", 24: "Tarnów", 25: "Metro station",
          26: "Piotrków Trybunalski", 27: "Wrocław", 28: "Social media", 29: "Kalisz", 30: "Go to jail", 31: "Kraków",
@@ -25,6 +26,7 @@ DARK_BLUE = (0, 0, 139)
 
 
 class Board(Window):
+    """Main board window"""
     def __init__(self, screen):
         super().__init__(screen)
         self.fields = []
@@ -59,15 +61,18 @@ class Board(Window):
         self.dice = Dice(screen)
 
     def clearing_board(self):
+        """Placing fields on the board"""
         for field in self.fields:
             field.placing_on_board()
 
     def drawing_controls_rectangle(self):
+        """Drawing controls rectangle on the screen"""
         controls_background = pygame.Surface((400, 1200))
         controls_background.fill(DARK_BLUE)
         self.screen.blit(controls_background, (1200, 0))
 
     def update_board(self):
+        """Update the board"""
         self.clearing_board()
         for player in self.players:
             player.update()
@@ -79,6 +84,7 @@ class Board(Window):
         pygame.display.flip()
 
     def category_holder(self, curnt_field, curnt_player):
+        """Checking if player has all fields in category"""
         same_owner = True
         for field in self.fields:
             if isinstance(curnt_field, City) and isinstance(field, City):
@@ -94,12 +100,14 @@ class Board(Window):
         return same_owner
 
     def if_game_over(self):
+        """Checking if player run out from money"""
         for player in self.players:
             if player.money < 0:
                 return True, player
         return False, None
 
     def game(self):
+        """Main game loop"""
         turn1_text = functions.create_text("First player's turn", self.h2_font, WHITE, (1400, 50))
         turn2_text = functions.create_text("Second player's turn", self.h2_font, WHITE, (1400, 50))
         prison1_text = functions.create_text("First player in prison!", self.h2_font, WHITE, (1400, 50))
@@ -168,7 +176,8 @@ class Board(Window):
                             self.screen.blit(build_button.create_surf(build_button.is_hover()), build_button.hit_box)
                         else:
                             self.screen.blit(build_button.create_surf(True), build_button.hit_box)
-                        owner_text = functions.create_text(f"Owner: Player {current_field.owner}", self.h2_font, WHITE, (1400, 1150))
+                        owner_text = functions.create_text(f"Owner: Player {current_field.owner}", self.h2_font,
+                                                           WHITE, (1400, 1150))
                         self.bliting_on_scren(owner_text)
                     if ((current_field.properties["To pay"] and current_field.properties["Occupied"]
                          and not functions.same_owner(self.players[self.turn-1], current_field.owner))
@@ -185,7 +194,8 @@ class Board(Window):
                     self.screen.blit(roll_dice_button.create_surf(True), roll_dice_button.hit_box)
                     self.screen.blit(end_turn_button.create_surf(end_turn_button.is_hover()), end_turn_button.hit_box)
                 else:
-                    self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()), roll_dice_button.hit_box)
+                    self.screen.blit(roll_dice_button.create_surf(roll_dice_button.is_hover()),
+                                     roll_dice_button.hit_box)
                     self.screen.blit(buy_button.create_surf(True), buy_button.hit_box)
                     self.screen.blit(build_button.create_surf(True), build_button.hit_box)
                     self.screen.blit(end_turn_button.create_surf(True), end_turn_button.hit_box)
@@ -228,7 +238,7 @@ class Board(Window):
                     functions.end_game()
 
                 if not self.players[self.turn-1].prison["State"]:
-                    if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced: # deleted for testing and multiple throws
+                    if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced:
                         diced = True
                         move_step = self.dice.rolling()
                         self.dice.showing()
@@ -276,7 +286,7 @@ class Board(Window):
                         current_field.building()
 
                 else:
-                    if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced: # deleted for testing and multiple throws
+                    if event.type == pygame.MOUSEBUTTONDOWN and roll_dice_button.is_hover() and not diced:
                         diced = True
                         if self.dice.rolling_in_prison():
                             self.players[self.turn-1].prison["State"] = False

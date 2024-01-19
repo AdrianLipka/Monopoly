@@ -1,3 +1,4 @@
+"""FUNCTIONS MODULE"""
 import sys
 import pygame
 
@@ -16,14 +17,14 @@ def create_text(text, font, color, cords):
 
 
 def same_owner(curnt_player, field_owner):
+    """Checking if owners are the same player"""
     if not field_owner == curnt_player:
         return False
-    else:
-        return True
+    return True
 
 
 def money_amount(money):
+    """Changing money amount to desired format"""
     if money > 1000000:
         return f"${round(money/1000000, 4)}M"
-    else:
-        return f"${money//1000}K"
+    return f"${money//1000}K"

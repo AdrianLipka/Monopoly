@@ -1,3 +1,4 @@
+"""FIELDS MODULE"""
 import pygame
 from fields_info import field_info
 import functions
@@ -24,6 +25,7 @@ DARK_RED = (139, 0, 0)
 
 
 class Field:
+    """Main field class"""
     def __init__(self, screen, position, name):
         self.screen = screen
         self.name = name
@@ -40,9 +42,11 @@ class Field:
         self.placing_on_board()
 
     def placing_on_board(self):
+        """Placing field on the board"""
         self.screen.blit(self.image, POSITION_ON_BOARD[self.position])
 
     def buying(self, player):
+        """Buying method"""
         self.owner = player
         self.properties["Occupied"] = True
         self.properties["To pay"] = True
@@ -50,12 +54,15 @@ class Field:
         player.money -= self.properties["Cost"]
 
     def field_to_buy(self):
+        """Changing the field on the board to available for purchase"""
         self.properties["To buy"] = True
         title_deed_card_image = pygame.image.load(f"images/title_deed_cards/{self.name.replace(" ", "")}.png")
         self.properties["Title deed card"] = title_deed_card_image
 
     def paying_rent(self, font, color):
-        rent_to_pay_text = functions.create_text(f"Rent paid: {functions.money_amount(self.rent)}", font, color, (1400, 700))
+        """Creating paying rent text"""
+        rent_to_pay_text = functions.create_text(f"Rent paid: {functions.money_amount(self.rent)}",
+                                                 font, color, (1400, 700))
         return rent_to_pay_text
 
     def __str__(self):
@@ -63,6 +70,7 @@ class Field:
 
 
 class City(Field):
+    """City field class"""
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
         for item in COLORS_OF_DISTRICTS:
@@ -73,11 +81,13 @@ class City(Field):
         self.builded = 0
 
     def building(self):
+        """Building house or hotel on the field"""
         self.owner.money -= self.properties["Building cost"]
         self.builded += 1
         self.rent = self.properties["Rent"][self.builded]
 
     def buying(self, player):
+        """Buying field method"""
         self.owner = player
         self.properties["Occupied"] = True
         self.properties["To pay"] = True
@@ -85,6 +95,7 @@ class City(Field):
         player.money -= self.properties["Cost"]
 
     def showing_buildings(self):
+        """Showing buildings on the board"""
         if self.builded > 0:
             if self.position < 10:
                 rotation = 0
@@ -127,6 +138,7 @@ class City(Field):
 
 
 class Transport(Field):
+    """Transport field class"""
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
         self.properties["Cost"] = 2000000
@@ -135,18 +147,21 @@ class Transport(Field):
 
 
 class CommunityChest(Field):
+    """Community chest field class"""
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
         self.properties["Special"] = True
 
 
 class ChanceCard(Field):
+    """Chance card field class"""
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
         self.properties["Special"] = True
 
 
 class Communication(Field):
+    """Communication field class"""
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
         self.properties["Cost"] = 1500000
@@ -155,16 +170,19 @@ class Communication(Field):
 
 
 class IncomeTax(Field):
+    """Income tax field class"""
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
         self.properties["To pay"] = True
         self.rent = 2000000
 
     def paying_rent(self, font, color):
-        rent_to_pay_text = functions.create_text(f"Tax paid: {functions.money_amount(self.rent)}", font, color, (1400, 700))
+        rent_to_pay_text = functions.create_text(f"Tax paid: {functions.money_amount(self.rent)}",
+                                                 font, color, (1400, 700))
         return rent_to_pay_text
 
 
 class Corner(Field):
+    """Corner field class"""
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)

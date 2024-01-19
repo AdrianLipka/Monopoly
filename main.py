@@ -1,3 +1,4 @@
+"""MAIN GAME PROGRAM"""
 import pygame
 import functions
 from menu import Menu, Rules, EndGame
@@ -6,6 +7,7 @@ WIDTH, HEIGHT = 1600, 1200
 
 
 class Game:
+    """Main game class"""
     def __init__(self):
         pygame.init()
 
