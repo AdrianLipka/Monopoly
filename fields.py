@@ -34,10 +34,11 @@ class Field:
         self.owner = None
         self.rent = None
         image_path = "images/board/"
+        image_path += self.name.replace(" ", "") + ".jpg"
         if self.position not in ROTATION_OF_IMAGE:
-            self.image = pygame.image.load(image_path + f"{self.name.replace(" ", "")}.jpg")
+            self.image = pygame.image.load(image_path)
         else:
-            self.image = pygame.transform.rotate(pygame.image.load(image_path + f"{self.name.replace(" ", "")}.jpg"),
+            self.image = pygame.transform.rotate(pygame.image.load(image_path),
                                                  ROTATION_OF_IMAGE[self.position])
         self.placing_on_board()
 
@@ -56,7 +57,8 @@ class Field:
     def field_to_buy(self):
         """Changing the field on the board to available for purchase"""
         self.properties["To buy"] = True
-        title_deed_card_image = pygame.image.load(f"images/title_deed_cards/{self.name.replace(" ", "")}.png")
+        image_path = "images/title_deed_cards/" + self.name.replace(" ", "") + ".png"
+        title_deed_card_image = pygame.image.load(image_path)
         self.properties["Title deed card"] = title_deed_card_image
 
     def paying_rent(self, font, color):
