@@ -28,7 +28,7 @@ class Field:
         self.screen = screen
         self.name = name
         self.position = position
-        self.properties = {"Occupied": False, "To buy": False, "To pay": False, "Cost": 0}
+        self.properties = {"Occupied": False, "To buy": False, "To pay": False, "Cost": 0, "Special": False}
         self.owner = None
         self.rent = None
         image_path = "images/board/"
@@ -137,11 +137,13 @@ class Transport(Field):
 class CommunityChest(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
+        self.properties["Special"] = True
 
 
 class ChanceCard(Field):
     def __init__(self, screen, position, name):
         Field.__init__(self, screen, position, name)
+        self.properties["Special"] = True
 
 
 class Communication(Field):
@@ -159,7 +161,7 @@ class IncomeTax(Field):
         self.rent = 2000000
 
     def paying_rent(self, font, color):
-        rent_to_pay_text = functions.create_text(f"Rent paid: {functions.money_amount(self.rent)}", font, color, (1400, 700))
+        rent_to_pay_text = functions.create_text(f"Tax paid: {functions.money_amount(self.rent)}", font, color, (1400, 700))
         return rent_to_pay_text
 
 
