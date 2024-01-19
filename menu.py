@@ -88,3 +88,37 @@ class Rules(Window):
 
             pygame.display.flip()
             self.fpsClock.tick(30)
+
+
+class EndGame(Window):
+    def __init__(self, screen, player_lost):
+        super().__init__(screen)
+        if player_lost == 1:
+            self.win_text = functions.create_text("PLAYER 2 WINS!", self.h1_font, WHITE,(0, 0))[0]
+        else:
+            self.win_text = functions.create_text("PLAYER 1 WINS!", self.h1_font, WHITE, (0, 0))[0]
+        self.menu_image = pygame.image.load("images/menu.jpg")
+
+    def show(self):
+        play_again_button = Button(self.width / 2, self.height * 2 / 5, "PLAY AGAIN!", 200, 50)
+        quit_button = Button(self.width / 2, self.height * 4 / 5, "QUIT", 200, 50)
+        self.screen.blit(self.menu_image, (0, 0))
+        text_rect = self.win_text.get_rect()
+        background_surface = pygame.Surface((text_rect.width, text_rect.height))
+        background_surface.fill(RED)
+        background_surface.blit(self.win_text, (0, 0))
+        self.screen.blit(background_surface, (self.width / 2 - text_rect.width / 2,
+                                              self.height * 1 / 5 - text_rect.height / 2))
+        while True:
+            self.screen.blit(play_again_button.create_surf(play_again_button.is_hover()), play_again_button.hit_box)
+            self.screen.blit(quit_button.create_surf(quit_button.is_hover()), quit_button.hit_box)
+            self.bliting_on_scren(play_again_button.create_text())
+            self.bliting_on_scren(quit_button.create_text())
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or (event.type == pygame.MOUSEBUTTONDOWN and quit_button.is_hover()):
+                    return False
+                if event.type == pygame.MOUSEBUTTONDOWN and play_again_button.is_hover():
+                    return True
+
+            pygame.display.flip()
+            self.fpsClock.tick(30)
